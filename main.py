@@ -5,14 +5,14 @@ import os
 import sys
 import platform
 import random
-#proměnné
+#Variables
 logged_as = ""
-uspech = False
-nic = False
-spravne = 0
-chyby = 0
+succes = False
+nothing = False
+right = 0
+errors = 0
 logged = False
-#konec proměnných a definice
+#Functions
 def main():
 	print(r'''    
    _       _               _     
@@ -24,39 +24,38 @@ def main():
  _/ |                            
 |__/                            
 ''')
-def kontrola():
+def check():
 	try:
 		with open("credentials.txt", "r", encoding="utf-8") as file:
-			radky = file.readlines()
+			lines = file.readlines()
 	except FileNotFoundError:
 		with open("credentials.txt", "w", encoding="utf-8") as file:
-			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,")
-			nic = True
-			radky = []
-	if len(radky) == 0:
+			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,") #Deafult Username and Password
+			nothing = True
+			lines = []
+	if len(lines) == 0:
 		with open("credentials.txt", "w", encoding="utf-8") as file:
-			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,")
-
-#Konec definic a kontrola systému
+			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,") #Deafult Username and Password
+#System check
 platform_system = platform.system()
 if platform_system == "Windows":
-	def cisto():
+	def clean():
 		os.system("cls")
 else:
-	def cisto():
+	def clean():
 		os.system("clear")
-#Konec Detekce systému a kontrola slovíček
+#File for vocabulary
 try:
 	with open("words_configFile.txt", "r", encoding="utf-8") as file:
-		radky = file.readlines()
+		lines = file.readlines()
 except FileNotFoundError:
 	f = open("words_configFile.txt", "a")
 	f.close()
-#Konec kontroly a ůvodní načítání	
-cisto()
+#loading
+clean()
 main()
 time.sleep(0.6)
-cisto()
+clean()
 print(r'''    
    _       _               _     
   (_)     | |             | |    
@@ -68,7 +67,7 @@ print(r'''
 |__/                             
 ''')
 time.sleep(0.6)
-cisto()
+clean()
 print(r'''     
    _       _               _     
   (_)     | |             | |    
@@ -80,7 +79,7 @@ print(r'''
 |__/                            
 ''')
 time.sleep(0.6)
-cisto()
+clean()
 print(r'''    
    _       _               _     
   (_)     | |             | |    
@@ -92,72 +91,72 @@ print(r'''
 |__/                             
 ''')
 time.sleep(0.6)
-cisto()
-#Konec úvodního načtení a main loop
+clean()
+#Main Menu
 while True:
 	main()
 	if logged_as != "":
-		print(f"\t\t|Přihlášen jako: {logged_as}|")
+		print(f"\t\t|Logged as: {logged_as}|")
 	if logged_as == "":
 		logged_as = "None"
-		print("\t\t|Nepřihlášen|")
+		print("\t\t|Not Logged|")
 	if logged_as == "admin":
-		choice = input("Zadej číslo akce:\n |1| -> |Přidání slovíček|\n |2| -> |Odebrání slovíček| \n |3| -> |Začít procvičovat|\n |4| -> |Hledání dostupnosti slovíček| \n |5| -> |Vypsání aktuálních slovíček| \n |6| -> |Přihlášení se|\n |7| -> |Registrace|\n |8| -> |Změna Hesla|\n |9| -> |Odebrání uživatele|\n |10| -> |Tabulka Výsledků|\n\t")
+		choice = input("Enter number of action:\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n\t")
 	else:
-		choice = input("Zadej číslo akce:\n |1| -> |Začít procvičovat|\n |2| -> |Vypsání aktuálních slovíček| \n |3| -> |Přihlášení se|\n |4| -> |Tabulka Výsledků|\n\t")		
+		choice = input("Enter number of action:\n |1| -> |Start Practicing|\n |2| -> |List current vocabulary| \n |3| -> |Login|\n |4| -> |User score|\n\t")		
 	try:
 		choice = int(choice)
 	except ValueError:
-		print("\t\tZadej ČÍSLO z nabídky!")
+		print("\t\tEnter number from the menu!")
 		time.sleep(1)		
-		cisto()
+		clean()
 		continue		
 	if choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5 and choice != 6 and choice != 7 and choice != 8 and choice != 9 and choice != 10 and logged_as == "admin":
 		print("\t\t1-10!")
 		time.sleep(1)		
-		cisto()
+		clean()
 		continue
 	elif logged_as != "admin" and choice != 1 and choice != 2 and choice != 3 and choice != 4:
 		print("\t\t1-4!")
 		time.sleep(1)		
-		cisto()
+		clean()
 		continue
 	if choice == 1 and logged_as == "admin":
-		cisto()
+		clean()
 		main()
-		print("|Q| -> |ukončení loopu|\n")
+		print("|Q| -> |End Loop|\n")
 		while True:
-			add = input("Zadej slovo: ")
+			add = input("Enter word: ")
 			if add.lower() == "q":
-				cisto()				
+				clean()				
 				break
-			add1 = input("Zadej překlad slova: ")
+			add1 = input("Enter word translation: ")
 			if add1.lower() == "q":
-				cisto()				
+				clean()				
 				break
 			with open("words_configFile.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				radky.append(f"{add}:{add1},")
+				lines = file.readlines()
+				lines.append(f"{add}:{add1},")
 			with open("words_configFile.txt", "w", encoding="utf-8") as file:
-				file.writelines(radky)
-			print("\tZapsáno✔️\n")
+				file.writelines(lines)
+			print("\tEnrolled✔️\n")
 	elif choice == 2 and logged_as == "admin":
 		while True:
-			cisto()
+			clean()
 			main()
-			radky2 = []
+			lines2 = []
 			success = False
-			print("|Q| -> |ukončení loopu|\n")
-			delete = input("Zadej slovo pro odstranění: ")
+			print("|Q| -> |End Loop|\n")
+			delete = input("Enter word to be deleted: ")
 			if delete.lower() == "q":
-				cisto()	
+				clean()	
 				break
 			with open("words_configFile.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				for i in range(len(radky)):
-					sloupce = radky[i].strip().split(",")
-					for sloup in sloupce:
-						slup = sloup.split(":")
+				lines = file.readlines()
+				for i in range(len(lines)):
+					columns = lines[i].strip().split(",")
+					for column in columns:
+						slup = column.split(":")
 						try:
 							one = slup[0]
 							two = slup[1]
@@ -165,459 +164,435 @@ while True:
 								pass
 								success = True
 							else:
-								radky2.append(f"{one}:{two},")
+								lines2.append(f"{one}:{two},")
 						except IndexError:
 							pass
-				radky = radky2
+				lines = lines2
 			if success == True:
 				with open("words_configFile.txt", "w", encoding="utf-8") as file:
-					file.writelines(radky2)
-				input("\tSmazáno✔️\n\t\tEnter pro pokračování")
+					file.writelines(lines2)
+				input("\tDeleted✔️\n\t\tEnter to continue")
 			else:
-				input("\tNenalezeno✖️\n\t\tEnter pro pokračování")					
+				input("\tNot Found✖️\n\t\tEnter to continue")					
 	elif choice == 3 and logged_as == "admin" or logged_as != "admin" and choice == 1:
 		if logged_as == "None":
-			cisto()
+			clean()
 			main()
-			input("Nejste přihlášeni!, Enter pro pokračování")
-			cisto()
+			input("You're not logged, Enter to continue")
+			clean()
 			continue
-		cisto()
+		clean()
 		main()
-		print("překlad slova:")
+		print("Word translation:")
 		with open("words_configFile.txt", "r", encoding="utf-8") as file:
-			radky = file.readlines()
-			for radek in radky:
-				sloupy = radek.strip().split(",")
-				cisla = []
-				while len(cisla) != len(sloupy):
-					cislo = random.randint(0, len(sloupy) - 1)
-					if cislo in cisla:
+			lines = file.readlines()
+			for line in lines:
+				columns = line.strip().split(",")
+				numbers = []
+				while len(numbers) != len(columns):
+					number = random.randint(0, len(columns) - 1)
+					if number in numbers:
 						pass
 					else:
-						cisla.append(cislo)
-				for i in range(len(cisla)):
-					verify = cisla[i]
-					sloup = sloupy[verify]
-					hlavni = sloup.split(":")
-					if len(hlavni) != 2:
+						numbers.append(number)
+				for i in range(len(numbers)):
+					verify = numbers[i]
+					column = columns[verify]
+					main2 = column.split(":")
+					if len(main2) != 2:
 						pass
 					else:
-						nahodne = random.randint(0, 1)
-						if nahodne == 1:
-							vedlejsi = hlavni[0]
-							hlavni = hlavni[1]
+						random_ = random.randint(0, 1)
+						if random_ == 1:
+							secondary = main2[0]
+							main2 = main2[1]
 						else:
-							vedlejsi = hlavni[1]
-							hlavni = hlavni[0]
-						quest = input(f"|{hlavni}|: ")
-						if quest.lower() == vedlejsi:
+							secondary = main2[1]
+							main2 = main2[0]
+						quest = input(f"|{main2}|: ")
+						if quest.lower() == secondary:
 							print("\t✔️")
-							spravne += 1
+							right += 1
 						else:
 							print("\t✖️")
-							chyby += 1
-		if spravne == 0 and chyby == 0:
-			cisto()
+							errors += 1
+		if right == 0 and errors == 0:
+			clean()
 			main()
-			input("Nejsou zadaná slova\n\tEnter pro pokračování")
-			cisto()
+			input("No words entered, Enter to continue")
+			clean()
 		else:
-			with open("Vysledky.txt", "a", encoding="utf-8") as file:
+			with open("results.txt", "a", encoding="utf-8") as file:
 				pass
-			with open("Vysledky.txt", "r", encoding="utf-8") as file:
-				prumer = round((100 / (chyby + spravne)) * spravne, 1) 
-				radky = file.readlines()
-				udaj3 = -33
-				udaj2 = 1
+			with open("results.txt", "r", encoding="utf-8") as file:
+				avg = round((100 / (errors + right)) * right, 1) 
+				lines = file.readlines()
+				info3 = -33
+				info2 = 1
 				i = 0
-				cislo_dulezite = -1
-				cislo_radku = -1
-				for radek in radky:
-					cislo_radku += 1
-					slova = radek.split(",")
-					udaj1 = slova[0]
-					udaj22 = slova[1]
-					udaj333 = slova[2]
-					if udaj1 == logged_as:
+				number_important = -1
+				line_number = -1
+				for line in lines:
+					line_number += 1
+					words = line.split(",")
+					info1 = words[0]
+					info22 = words[1]
+					info333 = words[2]
+					if info1 == logged_as:
 						NotFound = True
 						while NotFound:
 							i += 1
-							pojd = str(i)
-							pojd = hashlib.sha256(pojd.encode())
-							pojd = pojd.hexdigest()
-							if pojd == udaj22:
-								udaj2 = i
+							statement = str(i)
+							statement = hashlib.sha256(statement.encode())
+							statement = statement.hexdigest()
+							if statement == info22:
+								info2 = i
 								NotFound = False
-						udaj2 = int(udaj2)
-						cislo_dulezite = cislo_radku
-						udaj2 += 1
+						info2 = int(info2)
+						number_important = line_number
+						info2 += 1
 						i = 0
 						for i in range(1002):
 							j = i / 10
-							pojd = str(j)
-							pojd = hashlib.sha256(pojd.encode())
-							pojd = pojd.hexdigest()
-							if pojd == udaj333:
-								udaj3 = j
+							statement = str(j)
+							statement = hashlib.sha256(statement.encode())
+							statement = statement.hexdigest()
+							if statement == info333:
+								info3 = j
 								break
-			prumer2 = prumer
-			if udaj3 == -33:
-				prumer = float(prumer)
+			avg2 = avg
+			if info3 == -33:
+				avg = float(avg)
 			else:
-				prumer = round((udaj3 + prumer) / 2, 1)	
-			prumer = str(prumer)
-			prumer = hashlib.sha256(prumer.encode())
-			prumer = prumer.hexdigest()			
-			pokusy = str(udaj2)
-			pokusy2 = hashlib.sha256(pokusy.encode())
-			pokusy2 = pokusy2.hexdigest()
-			if cislo_dulezite != -1:
-				radky[cislo_dulezite] = f"{logged_as},{pokusy2},{prumer},\n"
+				avg = round((info3 + avg) / 2, 1)	
+			avg = str(avg)
+			avg = hashlib.sha256(avg.encode())
+			avg = avg.hexdigest()			
+			tries = str(info2)
+			tries2 = hashlib.sha256(tries.encode())
+			tries2 = tries2.hexdigest()
+			if number_important != -1:
+				lines[number_important] = f"{logged_as},{tries2},{avg},\n"
 			else:
-				radky.append(f"{logged_as},{pokusy2},{prumer},\n")
-			with open("Vysledky.txt", "w", encoding="utf-8") as file:
-				file.writelines(radky)
-			input(f"\n|Správně| -> |{spravne}|\n|Chyby| -> |{chyby}|\n|Procentuální úspěšnost| -> |{prumer2}%|")
-			spravne = 0
-			chyby = 0
-			cisto()
+				lines.append(f"{logged_as},{tries2},{avg},\n")
+			with open("results.txt", "w", encoding="utf-8") as file:
+				file.writelines(lines)
+			input(f"\n|Correct| -> |{right}|\n|Wrong| -> |{errors}|\n|Success percentage| -> |{avg2}%|")
+			right = 0
+			errors = 0
+			clean()
 	elif choice == 4 and logged_as == "admin":
 		while True:
-			cisto()
+			clean()
 			main()
-			print("|Q| -> |ukončení loopu|\n")
-			search = input("Vyhledej slovíčko... ")
+			print("|Q| -> |End loop|\n")
+			search = input("Search for word... ")
 			if search.lower() == "q":
-				cisto()
+				clean()
 				break
-			nalezeno = False
+			found = False
 			while True:
 				with open("words_configFile.txt", "r", encoding="utf-8") as file:
-					radky = file.readlines()
-					for i in range(len(radky)):
-						sloupce = radky[i].strip().split(",")
-						for sloupec in sloupce:
+					lines = file.readlines()
+					for i in range(len(lines)):
+						columns = lines[i].strip().split(",")
+						for column in columns:
 							try:
-								jeden = sloupec.split(":")[0].strip()
-								druhej = sloupec.split(":")[1].strip()
-								if jeden.lower() == search.lower() or druhej.lower() == search.lower():
-									nalezeno1 = jeden
-									nalezeno2 = druhej
-									nalezeno = True
+								first = column.split(":")[0].strip()
+								second = column.split(":")[1].strip()
+								if first.lower() == search.lower() or second.lower() == search.lower():
+									found1 = first
+									found2 = second
+									found = True
 							except IndexError:
 								pass
-				if nalezeno == False:
-					input("\tNenalezeno✖️\n\t\tEnter pro pokračování")
+				if found == False:
+					input("\tNot Found✖️\n\t\tEnter to continue")
 					break
 				else:
-					input(f"\tNalezeno✔️: |{nalezeno1}| -> |{nalezeno2}|\n\t\tEnter pro pokračování")
+					input(f"\tFound✔️: |{found1}| -> |{found2}|\n\t\tEnter to continue")
 					break
-			cisto()
+			clean()
 	elif choice == 5 and logged_as == "admin" or logged_as != "admin" and choice == 2:
-		cisto()
+		clean()
 		main()
-		print("Aktuální slovíčka\n")
+		print("Current vocabulary\n")
 		with open("words_configFile.txt", "r", encoding="utf-8") as file:
-			radky = file.readlines()
-			for i in range(len(radky)):
-				sloupce = radky[i].strip().split(",")
-				for sloupec in sloupce:
+			lines = file.readlines()
+			for i in range(len(lines)):
+				columns = lines[i].strip().split(",")
+				for column in columns:
 					try:
-						jeden = sloupec.split(":")[0].strip()
-						druhej = sloupec.split(":")[1].strip()
-						print(f"|{jeden}| -> |{druhej}|")
+						first = column.split(":")[0].strip()
+						second = column.split(":")[1].strip()
+						print(f"|{first}| -> |{second}|")
 					except IndexError:
 						pass
-		input("\nEnter pro pokračování")
-		cisto()
+		input("\nEnter to continue")
+		clean()
 	elif choice == 6 and logged_as == "admin" or logged_as != "admin" and choice == 3:
-		uspech = False
-		cisto()	
+		succes = False
+		quit = False
+		clean()	
 		main()
-		kontrola()
+		check()
 		for i in range(3):
+			clean()	
+			main()
+			print("|Q| -> |End loop|\n")
 			print("|Login|")
-			zadano = input("|Uživatelské jméno|: ")
-			logged_as = zadano
-			zadano2 = getpass.getpass("|Heslo|: ")
-			zadano = hashlib.sha256(zadano.encode())
-			zadano = zadano.hexdigest()
-			zadano2 = hashlib.sha256(zadano2.encode())
-			zadano2 = zadano2.hexdigest()
+			entered = input("|Username|: ")
+			if entered.lower() == "q":
+				clean()
+				quit = True
+				break
+			logged_as = entered
+			entered2 = getpass.getpass("|Password|: ")
+			entered = hashlib.sha256(entered.encode())
+			entered = entered.hexdigest()
+			entered2 = hashlib.sha256(entered2.encode())
+			entered2 = entered2.hexdigest()
 			with open("credentials.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				for radek in radky:
-					sloupy = radek.strip().split(",")
+				lines = file.readlines()
+				for line in lines:
+					columns = line.strip().split(",")
 					try:
-						for sloup in sloupy:
-							slova = sloup.split(":")
-							uzivatel = slova[0]
-							password = slova[1]
-							if zadano == uzivatel:
-								if zadano2 == password:
-									uspech = True
+						for column in columns:
+							words = column.split(":")
+							uzivatel = words[0]
+							password = words[1]
+							if entered == uzivatel:
+								if entered2 == password:
+									succes = True
 					except IndexError:
 						pass
-
-			if uspech == True:
+			if succes == True:
 				break
 			else:
-				print("Špatné údaje")
-				cisto()
-				main()
+				input("Wrong credentials, Enter to continue")
 				continue
-		if uspech != True:
-			print("Příliš mnoho chybných pokusů")
-			print("ukončuji...")
+		if quit == True:
+			logged_as = ""
+		elif succes != True:
+			print("Too many false attempts")
+			print("terminating...")
 			time.sleep(3)
 			sys.exit()	
-		cisto()	
+		clean()	
 	elif choice == 7 and logged_as == "admin":
 		while True:
-			uspech = False
-			cisto()
+			succes = False
+			clean()
 			main()
-			kontrola()
+			check()
 			if logged_as != "":
+				print("|Q| -> |End loop|\n")
 				print("|Register|")
-				user = input("|Uživatelské jméno nebo Q=Ukončení Loopu|: ")
+				user = input("|Username|: ")
 				if user.lower() == "q":
 					break
 				user = hashlib.sha256(user.encode())
 				user = user.hexdigest()
 				with open("credentials.txt", "r", encoding="utf-8") as file:
-					radky = file.readlines()
-					radky = radky[0].split(",")
-					for radek in radky:
-						jeden = radek.split(":")[0]
-						if user == jeden:
-							input("\t|Uživatel je již registrovaný!, Enter pro pokračování|")
+					lines = file.readlines()
+					lines = lines[0].split(",")
+					for line in lines:
+						first = line.split(":")[0]
+						if user == first:
+							input("\t|Username already registered, Enter to continue|")
 							break
-					if user == jeden:
+					if user == first:
 						continue
 				while True:
-					pasw = getpass.getpass("|Heslo|: ")
-					pasw2 = getpass.getpass("|Heslo znovu|: ")
+					pasw = getpass.getpass("|Password|: ")
+					pasw2 = getpass.getpass("|Password again|: ")
 					if pasw == pasw2:
 						break
 					else:
-						input("\tHesla se neshodují, Enter pro pokračování")
-						cisto()
+						input("\tPasswords do not match, Enter to continue")
+						clean()
 						main()
 						continue
 				pasw = hashlib.sha256(pasw.encode())
 				pasw = pasw.hexdigest()
 				pasw2 = ""
 				with open("credentials.txt", "r", encoding="utf-8") as file:
-					radky = file.readlines()
-					radky.append(f"{user}:{pasw},")
+					lines = file.readlines()
+					lines.append(f"{user}:{pasw},")
 				with open("credentials.txt", "w", encoding="utf-8") as file:
-					file.writelines(radky)
-				input("Údaje byly zapsány, Enter pro pokračování")
-				cisto()
-			else:
-				input("Pro registraci nového uživatele se přihlašte, Enter pro pokračování")
-				cisto()
-				main()
-				for i in range(3):
-					print("|Login|")
-					zadano = input("|Uživatelské jméno|: ")
-					logged_as = zadano
-					zadano2 = getpass.getpass("|Heslo|: ")
-					zadano = hashlib.sha256(zadano.encode())
-					zadano = zadano.hexdigest()
-					zadano2 = hashlib.sha256(zadano2.encode())
-					zadano2 = zadano2.hexdigest()
-					with open("credentials.txt", "r", encoding="utf-8") as file:
-						radky = file.readlines()
-						for radek in radky:
-							sloupy = radek.strip().split(",")
-							try:
-								for sloup in sloupy:
-									slova = sloup.split(":")
-									uzivatel = slova[0]
-									password = slova[1]
-									if zadano == uzivatel:
-										if zadano2 == password:
-											uspech = True
-							except IndexError:
-								pass
-
-					if uspech == True:
-						print("Přihlášení proběhlo úspěšně!")
-						time.sleep(2)
-						break
-					else:
-						print("Špatné údaje")
-						cisto()
-						main()
-						continue
-				if uspech != True:
-					print("Příliš mnoho chybných pokusů")
-					print("ukončuji...")
-					time.sleep(3)
-					sys.exit()	
-		cisto()
+					file.writelines(lines)
+				input("Credentials were saved, Enter to continue")
+				clean()
+		clean()
 	elif choice == 8 and logged_as == "admin":
 		while True:
-			cisto()
+			clean()
 			main()
-			hlavni1 = input("|Uživatelské jméno|: ")
-			hlavni1 = hashlib.sha256(hlavni1.encode())
-			hlavni1 = hlavni1.hexdigest()
+			print("|Q| -> |End loop|\n")
+			print("|Change Password|")
+			main21 = input("|Username|: ")
+			if main21.lower() == "q":
+				clean()
+				break
+			main21 = hashlib.sha256(main21.encode())
+			main21 = main21.hexdigest()
 			with open("credentials.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				radek = radky[0].split(",")
+				lines = file.readlines()
+				line = lines[0].split(",")
 				important = -1
-				mozna22 = ""
-				for slovo in radek:
+				mabye22 = ""
+				for word in line:
 					try:
 						important += 1
-						mozna = slovo.split(":")[0]
-						mozna2 = slovo.split(":")[1]
-						if mozna == hlavni1:
-							mozna22 = mozna2
+						mabye = word.split(":")[0]
+						mabye2 = word.split(":")[1]
+						if mabye == main21:
+							mabye22 = mabye2
 							important2 = important
 							break
 					except IndexError:
 						pass
-			if mozna22 == "":
-				input("\n\t|Uživatelské jméno nenalezeno, Enter pro pokračování|")
+			if mabye22 == "":
+				input("\n\t|Username not found, Enter to continue|")
 				continue
 			else:
-				hlavni2 = getpass.getpass("|Původní heslo|: ")
-				hlavni2 = hashlib.sha256(hlavni2.encode())
-				hlavni2 = hlavni2.hexdigest()
-				if hlavni2 != mozna22:
-					input("\n\t|Špatné heslo, Enter pro pokračování|")
+				main22 = getpass.getpass("|Old Password|: ")
+				main22 = hashlib.sha256(main22.encode())
+				main22 = main22.hexdigest()
+				if main22 != mabye22:
+					input("\n\t|Wrong password, Enter to continue|")
 					continue
 				else:
 					while True:
-						hlavni3 = getpass.getpass("|Nové heslo|: ")
-						hlavni4 = getpass.getpass("|Znovu nové heslo|: ")
-						if hlavni3 != hlavni4:
-							input("|Hesla se neshodují, Enter pro pokračování|")
+						main23 = getpass.getpass("|New password|: ")
+						main24 = getpass.getpass("|Again new password|: ")
+						if main23 != main24:
+							input("|Passwords do not match, Enter to continue|")
+							clean()
+							main()
 							continue
 						else:
 							break
-					nove_heslo = hashlib.sha256(hlavni3.encode())
-					nove_heslo = nove_heslo.hexdigest()
-					hlavni4 = nove_heslo
+					new_password = hashlib.sha256(main23.encode())
+					new_password = new_password.hexdigest()
+					main24 = new_password
 					with open("credentials.txt", "r", encoding="utf-8") as file:
-						radky = file.readlines()
-						radky = radky[0].split(",")
+						lines = file.readlines()
+						lines = lines[0].split(",")
 						if important2 > 0:
-							radky[important2] = f",{hlavni1}:{nove_heslo},"
+							lines[important2] = f",{main21}:{new_password},"
 						else:
-							radky[important2] = f"{hlavni1}:{nove_heslo},"
+							lines[important2] = f"{main21}:{new_password},"
 					with open("credentials.txt", "w", encoding="utf-8") as file:
-						file.writelines(radky)
-					print("\t|Heslo úspěsně změněno|")
+						file.writelines(lines)
+					print("\t|Password sucesfully changed|")
 					time.sleep(1)
-					cisto()
+					clean()
 					break
 	elif choice == 9 and logged_as == "admin":
 		while True:
-			cisto()
+			clean()
 			main()
-			hlavni1 = input("|Uživatelské jméno (Q pro konec)|: ")
-			if hlavni1 == "admin":
-				print("\t|Nelze odebrat admina!|")
+			print("|Q| -> |End loop|\n")
+			print("|Unregister|")
+			main21 = input("|Username|: ")
+			if main21 == "admin":
+				print("\t|Cannot remove admin!|")
 				time.sleep(1)
-				cisto()
+				clean()
 				continue
-			elif hlavni1.lower() == "q":
-				cisto()
+			elif main21.lower() == "q":
+				clean()
 				break
-			hlavni1 = hashlib.sha256(hlavni1.encode())
-			hlavni1 = hlavni1.hexdigest()
+			main21 = hashlib.sha256(main21.encode())
+			main21 = main21.hexdigest()
 			with open("credentials.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				radek = radky[0].split(",")
+				lines = file.readlines()
+				line = lines[0].split(",")
 				important = -1
-				mozna22 = ""
-				for slovo in radek:
+				mabye22 = ""
+				for word in line:
 					try:
 						important += 1
-						mozna = slovo.split(":")[0]
-						mozna2 = slovo.split(":")[1]
-						if mozna == hlavni1:
-							mozna22 = mozna2
+						mabye = word.split(":")[0]
+						mabye2 = word.split(":")[1]
+						if mabye == main21:
+							mabye22 = mabye2
 							important2 = important
 							break
 					except IndexError:
 						pass
-			if mozna22 == "":
-				input("\n\t|Uživatelské jméno nenalezeno, Enter pro pokračování|")
+			if mabye22 == "":
+				input("\n\t|Username not found, Enter to continue|")
 				continue
 			else:
-				hlavni2 = getpass.getpass("|Heslo|: ")
-				hlavni2 = hashlib.sha256(hlavni2.encode())
-				hlavni2 = hlavni2.hexdigest()
-				if hlavni2 != mozna22:
-					input("\n\t|Špatné heslo, Enter pro pokračování|")
+				main22 = getpass.getpass("|Password|: ")
+				main22 = hashlib.sha256(main22.encode())
+				main22 = main22.hexdigest()
+				if main22 != mabye22:
+					input("\n\t|Wrong password, Enter to continue|")
 					continue
 				else:
 					with open("credentials.txt", "r", encoding="utf-8") as file:
-						radky = file.readlines()
-						radky = radky[0].split(",")
-						cisilka = len(radky)
-						radky2 = []
-						cislo = 0
-						for okay in radky:
-							cislo += 1
-							if okay.split(":")[0] == hlavni1 and okay.split(":")[1] == hlavni2:
+						lines = file.readlines()
+						lines = lines[0].split(",")
+						cisilka = len(lines)
+						lines2 = []
+						number = 0
+						for okay in lines:
+							number += 1
+							if okay.split(":")[0] == main21 and okay.split(":")[1] == main22:
 								pass
 							else:
-								if cisilka == cislo:
-									radky2.append(f"{okay}")
+								if cisilka == number:
+									lines2.append(f"{okay}")
 								else:
-									radky2.append(f"{okay},")
+									lines2.append(f"{okay},")
 					with open("credentials.txt", "w", encoding="utf-8") as file:
-						file.writelines(radky2)	
-					print("\t|Uživatel úspěšně odebrán|")
+						file.writelines(lines2)	
+					print("\t|Username sucesfully deleted|")
 					time.sleep(1)
-					cisto()
+					clean()
 					break					
 	elif choice == 10 and logged_as == "admin" or logged_as != "admin" and choice == 4:
-		cisto()
+		clean()
 		main()
 		try:	
-			with open("Vysledky.txt", "r", encoding="utf-8") as file:
-				radky = file.readlines()
-				for radek in radky:
-					slova = radek.split(",")
-					udaj1 = slova[0].strip()
-					udaj2 = slova[1].strip()
-					udaj3 = slova[2].strip()
+			with open("results.txt", "r", encoding="utf-8") as file:
+				lines = file.readlines()
+				for line in lines:
+					words = line.split(",")
+					info1 = words[0].strip()
+					info2 = words[1].strip()
+					info3 = words[2].strip()
 					NotFound = True
 					i = 0
 					while NotFound:
 						i += 1
-						pojd = str(i)
-						pojd = hashlib.sha256(pojd.encode())
-						pojd = pojd.hexdigest()
-						if pojd == udaj2:
-							udaj2 = i
+						statement = str(i)
+						statement = hashlib.sha256(statement.encode())
+						statement = statement.hexdigest()
+						if statement == info2:
+							info2 = i
 							NotFound = False
-					udaj2 = int(udaj2)
+					info2 = int(info2)
 					i = 0
 					for i in range(1001):
 						j = i / 10
-						pojd = str(j)
-						pojd = hashlib.sha256(pojd.encode())
-						pojd = pojd.hexdigest()
-						if pojd == udaj3:
-							udaj3 = j
+						statement = str(j)
+						statement = hashlib.sha256(statement.encode())
+						statement = statement.hexdigest()
+						if statement == info3:
+							info3 = j
 							break
-					print(f"|{udaj1}|\n\t |Pokusy: {udaj2}| \n\t |Průměr úspěšnosti| -> |{udaj3}%|")
+					print(f"|{info1}|\n\t |Tries: {info2}| \n\t |Average success rate| -> |{info3}%|")
 					
 			input("\n\t\tEnter pro pokračování")
-			cisto()
+			clean()
 		except FileNotFoundError:
-			input("Žádné výsledky nejsou k dispozici, Enter pro pokračování")
-			cisto()				
-#Jak0ub dne 04.09.2024
-#Dne 17.9.2024 -> přidána funkce průměru úspěšnosti (Chystá se nová funkce pro session cookie)
-#Dne 18.9.2024 -> přidána funkce mazání uživatelů a úpravy hesel. Také redesign menu pro uživatele a admina. Oprava chyby duplicitních jmen v register sekci	
+			input("No results, Enter to continue")
+			clean()				
+#Created by Jak0ub on 04.09.2024
+#Day 17.9.2024 -> added Average success rate function (New session cookie function is coming)
+#Day 18.9.2024 -> added the function of deleting users and editing passwords. Also redesign menu for users and admin. Correction of errors of duplicate names in the register section
+#Day 19.9.2024 -> Translated to English, small bugs fixes	
