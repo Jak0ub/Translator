@@ -1,5 +1,10 @@
-## Introduction
+## SHA-256
+```SHA-256
+02499DBF14A32329C30636F1A2BE2C865D7BD921BF3AF32CEE3C21754F2C3AB5
+```
 
+
+## Introduction
 `1.`
 For user results, you will need the `Results.txt` file. The file is hashed! However, the data is readable in the program itself.
 
