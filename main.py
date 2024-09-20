@@ -587,7 +587,7 @@ while True:
 							break
 					print(f"|{info1}|\n\t |Tries: {info2}| \n\t |Average success rate| -> |{info3}%|")
 					
-			input("\n\t\tEnter pro pokračování")
+			input("\n\t\tEnter to continue")
 			clean()
 		except FileNotFoundError:
 			input("No results, Enter to continue")
