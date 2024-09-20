@@ -12,7 +12,7 @@ For user results, you will need the `Results.txt` file. The file is hashed! Howe
 For all usernames and passwords, you will need the `credentials.txt` file, which is also hashed!
 
 `3.`
-For all vocabulary words and their translations, you will need the `words_configFile.txt` file. It is not hashed!
+For all vocabulary words and their translations, you will need the `words_configFile.txt` file, which is not hashed!
 > ❕ **Important:**
 > If you want to prevent modification by other users (if you plan to distribute the file, for example, on a school network), set the file permissions to Read-only for end users. However, NEVER set the `Results.txt` file as Read-only, otherwise, users' results will not be saved. Set the remaining two files to Read-only only after configuration. If you do this before configuration, you will need to run the program as an admin.
 
