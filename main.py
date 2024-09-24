@@ -1,17 +1,114 @@
 import getpass
+from datetime import datetime
 import hashlib
 import time
 import os
 import sys
 import platform
 import random
+#System check
+platform_system = platform.system()
+if platform_system == "Windows":
+	def clean():
+		os.system("cls")
+	temp_Windows_path = os.environ.get('TEMP')
+	temp_path = f"{temp_Windows_path}/translator_session.dat"
+else:
+	def clean():
+		os.system("clear")
+	temp_path = "/tmp/translator_session.dat"
 #Variables
 logged_as = ""
 succes = False
 nothing = False
 right = 0
 errors = 0
+deleteme = False
 logged = False
+#Persistent cookie check
+try:
+	with open(temp_path, "r", encoding="utf-8") as file:
+		columns = file.readlines()
+		column = columns[0].strip()
+		cookie_hour = column.split(",")[1].split(":")[0]
+		for i in range(24):
+			saved_i = i
+			i = str(i)
+			i = hashlib.sha256(i.encode())
+			i = i.hexdigest()
+			if i == cookie_hour:
+				cookie_hour = saved_i
+				break
+		cookie_minute = column.split(",")[1].split(":")[1]
+		for i in range(60):
+			saved_i = i
+			i = str(i)
+			i = hashlib.sha256(i.encode())
+			i = i.hexdigest()
+			if i == cookie_minute:
+				cookie_minute = saved_i
+				break
+		if cookie_minute >= 30:
+			possible_minute = cookie_minute - 30
+			possible_hour = cookie_hour + 1
+		else:
+			possible_minute = cookie_minute + 30
+			possible_hour = cookie_hour
+		checking = column.split(",")[0].split(":")[1]
+		checking_saved = checking
+		logged_as_mabye = column.split(",")[0].split(":")[0]
+		logged_as_mabye_saved = logged_as_mabye
+		logged_as_mabye = hashlib.sha256(logged_as_mabye.encode())
+		logged_as_mabye = logged_as_mabye.hexdigest()
+		checking = list(checking)
+		try:
+			with open("credentials.txt", "r", encoding="utf-8") as file:
+				columns = file.readlines()
+				for column in columns:
+					rows = column.split(",")
+					for row in rows:
+						try:
+							log = row.split(":")[0]
+							if log == logged_as_mabye:
+								pwd = list(row.split(":")[1])
+								final = 33
+								for pw in pwd:
+									try:
+										pw = int(pw)
+										final += pw
+									except ValueError:
+										pass
+								if str(final) == checking_saved:
+									now = datetime.now()
+									current_hour = now.strftime("%H")
+									current_min = now.strftime("%M")
+									current_hour = int(current_hour)
+									current_min = int(current_min)
+									if cookie_minute >= 30:
+										if current_hour == possible_hour and current_min <= possible_minute or current_hour == cookie_hour and current_min < 60:
+											logged_as = logged_as_mabye_saved
+											print("|Persistent cookie active|")
+											time.sleep(1.3)
+										else:
+											deleteme = True
+									else:
+										if current_hour == possible_hour:
+											if current_min >= 0 and current_min <= possible_minute:
+												logged_as = logged_as_mabye_saved
+												print("|Persistent cookie active|")
+												time.sleep(1.3)
+											else:
+												deleteme = True
+						except IndexError:
+							pass
+		except FileNotFoundError:
+			pass
+except FileNotFoundError:
+	pass
+if deleteme == True:
+	os.remove(temp_path)
+	print("|Persistent cookie expired|")
+	time.sleep(1.3)
 #Functions
 def main():
 	print(r'''    
@@ -36,14 +133,6 @@ def check():
 	if len(lines) == 0:
 		with open("credentials.txt", "w", encoding="utf-8") as file:
 			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,") #Deafult Username and Password
-#System check
-platform_system = platform.system()
-if platform_system == "Windows":
-	def clean():
-		os.system("cls")
-else:
-	def clean():
-		os.system("clear")
 #File for vocabulary
 try:
 	with open("words_configFile.txt", "r", encoding="utf-8") as file:
@@ -98,7 +187,6 @@ while True:
 	if logged_as != "":
 		print(f"\t\t|Logged as: {logged_as}|")
 	if logged_as == "":
-		logged_as = "None"
 		print("\t\t|Not Logged|")
 	if logged_as == "admin":
 		choice = input("Enter number of action:\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n\t")
@@ -367,6 +455,30 @@ while True:
 					except IndexError:
 						pass
 			if succes == True:
+				now = datetime.now()
+				current_hour = now.strftime("%H")
+				current_min = now.strftime("%M")
+				current_hour = hashlib.sha256(current_hour.encode())
+				current_hour = current_hour.hexdigest()	
+				current_min = hashlib.sha256(current_min.encode())
+				current_min = current_min.hexdigest()				
+				userinput = input("|Save Persistent cookie? (Stay logged for 30min)| -> |Y/n|: ")
+				if userinput.lower() == "y":
+					entered2 = list(entered2)
+					final = 33
+					for enter in entered2:
+						try:
+							enter = int(enter)
+							final += enter
+						except ValueError:
+							pass
+					if platform_system == "Windows":
+						with open(temp_path, "w", encoding="utf-8") as file:
+							file.write(f"{logged_as}:{final},{current_hour}:{current_min}")
+					else:
+						with open(temp_path, "w", encoding="utf-8") as file:
+							file.write(f"{logged_as}:{final},{current_hour}:{current_min}")
+					input("\t|Persistent cookie saved! Enter to continue|")
 				break
 			else:
 				input("Wrong credentials, Enter to continue")
@@ -486,7 +598,8 @@ while True:
 					with open("credentials.txt", "w", encoding="utf-8") as file:
 						file.writelines(lines)
 					print("\t|Password sucesfully changed|")
-					time.sleep(1)
+					input("\n\n|WARNING!|->|If you have active Persistent cookie, you will need to relogin to reactivate it|\n\tEnter to continue")
+
 					clean()
 					break
 	elif choice == 9 and logged_as == "admin":
@@ -593,6 +706,7 @@ while True:
 			input("No results, Enter to continue")
 			clean()				
 #Created by Jak0ub on 04.09.2024
-#Day 17.9.2024 -> added Average success rate function (New session cookie function is coming)
+#Day 17.9.2024 -> added Average success rate function (New Persistent cookie function is coming)
 #Day 18.9.2024 -> added the function of deleting users and editing passwords. Also redesign menu for users and admin. Correction of errors of duplicate names in the register section
-#Day 19.9.2024 -> Translated to English, small bugs fixes	
+#Day 19.9.2024 -> Translated to English, small bugs fixes
+#Day 24.9.2024 -> Persistent cookie function, Building an SLS (Special Layer of Security [for Improved Encryption of Stored Hashes])	
