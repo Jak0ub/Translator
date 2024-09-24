@@ -2,7 +2,7 @@
 ```SHA-256
 E16B8D1E58F419F821EDE2BA8508BD0AEDAC6E85D947557AF61DE11BB8918803
 ```
-
+`!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
 
 ## Introduction
 `1.`
