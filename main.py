@@ -458,6 +458,11 @@ while True:
 				now = datetime.now()
 				current_hour = now.strftime("%H")
 				current_min = now.strftime("%M")
+				for i in range(10):
+					if current_min == f"0{i}":
+						current_min =str(i)
+					if current_hour == f"0{i}":
+						current_hour = str(i)
 				current_hour = hashlib.sha256(current_hour.encode())
 				current_hour = current_hour.hexdigest()	
 				current_min = hashlib.sha256(current_min.encode())
