@@ -3,6 +3,7 @@
 0A1B97CA255599FA7F0C9B1FAFA4B8AD1ADE082A4B5526A45EED9F5AD566C6F3
 ```
 `!` `You will now be cooldowned for false login attempts`
+
 `!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
 
 ## Introduction
