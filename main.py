@@ -13,11 +13,14 @@ if platform_system == "Windows":
 		os.system("cls")
 	temp_Windows_path = os.environ.get('TEMP')
 	temp_path = f"{temp_Windows_path}/translator_session.dat"
+	banned_path = f"{temp_Windows_path}/attempts.dat"
 else:
 	def clean():
 		os.system("clear")
 	temp_path = "/tmp/translator_session.dat"
+	banned_path = "/tmp/attemps.dat"
 #Variables
+wrong_attempts = 0
 logged_as = ""
 succes = False
 nothing = False
@@ -25,6 +28,99 @@ right = 0
 errors = 0
 deleteme = False
 logged = False
+empty = ""
+#Wrong attemps check
+try:
+	with open(banned_path, "r", encoding="utf-8") as file:
+		columns = file.readlines()
+		skipping = False
+		saved_column = f"{columns[0]}, PASS"
+		try:
+			for column in columns:
+				info1 = column.split(",")[0].strip()
+				info2 = column.split(",")[1].strip()
+				info3 = column.split(",")[2].strip()
+				try:
+					info4 = column.split(",")[3].strip()
+					if info4 == "PASS":
+						skipping = True
+				except IndexError:
+					pass
+				if skipping == False:
+					attmps = 3
+					for i in range(1000):
+						stored_i = i
+						i = str(i)
+						i = hashlib.sha256(i.encode())
+						i = i.hexdigest()
+						if i == columns[0].split(",")[0]:
+							attmps = stored_i
+					failed_attmps = round(attmps / 3)
+					cooldown_saved = failed_attmps
+					if cooldown_saved == 1:
+						cooldown_saved = 1
+					elif cooldown_saved == 2:
+						cooldown_saved = 5
+					elif cooldown_saved == 3:
+						cooldown_saved = 10
+					elif cooldown_saved == 4:
+						cooldown_saved = 60
+					if failed_attmps == 1:
+						cooldown = 1
+					elif failed_attmps == 2:
+						cooldown = 5
+					elif failed_attmps == 3:
+						cooldown = 10
+					elif failed_attmps == 4:
+						cooldown = 60
+					else:
+						input(f"|You have entered too many false attempts, request unblock from your admin|\n\tEnter to continue")
+						sys.exit()
+					for i in range(24):
+						saved_i = i
+						i = str(i)
+						i = hashlib.sha256(i.encode())
+						i = i.hexdigest()
+						if i == info2:
+							cooldown_hour = saved_i
+							break
+					for i in range(60):
+						saved_i = i
+						i = str(i)
+						i = hashlib.sha256(i.encode())
+						i = i.hexdigest()
+						if i == info3:
+							cooldown_minute = saved_i
+					now = datetime.now()
+					current_hour = now.strftime("%H")
+					current_min = now.strftime("%M")
+					current_hour = int(current_hour)
+					current_min = int(current_min)
+					if cooldown_minute + cooldown_saved >= 60:
+						cooldown_minute = cooldown_minute - 60 + cooldown
+						cooldown_hour += 1
+						if cooldown_hour == 24:
+							cooldown_hour = 0
+					else:
+						cooldown_minute += cooldown
+					if cooldown_minute <= current_min and current_hour >= cooldown_hour or current_hour > cooldown_hour:
+						print(f"|Your {cooldown_saved} min cooldown ended!|")
+						file.close()
+						with open(banned_path, "w", encoding="utf-8") as file:
+							file.write(saved_column)
+						time.sleep(2)
+						clean()
+					else:
+						if cooldown_minute < 10:
+							cooldown_minute = f"0{cooldown_minute}"
+						input(f"|You are cooldowned to login until {cooldown_hour}:{cooldown_minute}|\n\tEnter to continue")
+						sys.exit()
+					
+						
+		except IndexError:
+			pass
+except FileNotFoundError:
+	pass
 #Persistent cookie check
 try:
 	with open(temp_path, "r", encoding="utf-8") as file:
@@ -125,6 +221,30 @@ def check():
 	try:
 		with open("credentials.txt", "r", encoding="utf-8") as file:
 			lines = file.readlines()
+			line_zero = lines[0].strip()
+			succesfully = False
+			admin_line = ""
+			try:
+				columns = lines[0].split(",")
+				try:
+					for column in columns:
+						questions = column.split(":")[0].strip()
+						if questions == "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918":
+							succesfully = True
+						else:
+							pass
+					if succesfully == False:
+						admin_line = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,"
+				except IndexError:
+					pass
+			except IndexError:
+				file.close()
+				with open("credentials.txt", "w", encoding="utf-8") as file:
+					file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,")
+
+		with open("credentials.txt", "w", encoding="utf-8") as file:
+			file.write(f"{line_zero}{admin_line}")
+				
 	except FileNotFoundError:
 		with open("credentials.txt", "w", encoding="utf-8") as file:
 			file.write("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,") #Deafult Username and Password
@@ -189,23 +309,25 @@ while True:
 	if logged_as == "":
 		print("\t\t|Not Logged|")
 	if logged_as == "admin":
-		choice = input("Enter number of action:\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n\t")
+		choice = input("Enter number of action:\n |0| -> |Quit|\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n\t")
 	else:
-		choice = input("Enter number of action:\n |1| -> |Start Practicing|\n |2| -> |List current vocabulary| \n |3| -> |Login|\n |4| -> |User score|\n\t")		
+		choice = input("Enter number of action:\n |0| -> |Quit|\n |1| -> |Start Practicing|\n |2| -> |List current vocabulary| \n |3| -> |Login|\n |4| -> |User score|\n\t")		
 	try:
 		choice = int(choice)
 	except ValueError:
 		print("\t\tEnter number from the menu!")
 		time.sleep(1)		
 		clean()
-		continue		
+		continue
+	if choice == 0:
+		break		
 	if choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5 and choice != 6 and choice != 7 and choice != 8 and choice != 9 and choice != 10 and logged_as == "admin":
-		print("\t\t1-10!")
+		print("\t\t0-10!")
 		time.sleep(1)		
 		clean()
 		continue
 	elif logged_as != "admin" and choice != 1 and choice != 2 and choice != 3 and choice != 4:
-		print("\t\t1-4!")
+		print("\t\t0-4!")
 		time.sleep(1)		
 		clean()
 		continue
@@ -424,7 +546,7 @@ while True:
 		clean()	
 		main()
 		check()
-		for i in range(3):
+		while wrong_attempts != 3:
 			clean()	
 			main()
 			print("|Q| -> |End loop|\n")
@@ -434,7 +556,7 @@ while True:
 				clean()
 				quit = True
 				break
-			logged_as = entered
+			logged_as2 = entered
 			entered2 = getpass.getpass("|Password|: ")
 			entered = hashlib.sha256(entered.encode())
 			entered = entered.hexdigest()
@@ -455,6 +577,13 @@ while True:
 					except IndexError:
 						pass
 			if succes == True:
+				logged_as = logged_as2
+				wrong_attempts = 0
+				try:
+					os.remove(banned_path)
+					print("|Cooldown time has been reseted!|")
+				except FileNotFoundError:
+					pass
 				now = datetime.now()
 				current_hour = now.strftime("%H")
 				current_min = now.strftime("%M")
@@ -486,12 +615,55 @@ while True:
 					input("\t|Persistent cookie saved! Enter to continue|")
 				break
 			else:
+				wrong_attempts += 1
 				input("Wrong credentials, Enter to continue")
 				continue
 		if quit == True:
-			logged_as = ""
+			pass
 		elif succes != True:
 			print("Too many false attempts")
+			try:
+				with open(banned_path, "r", encoding="utf-8") as file:
+					columns = file.readlines()
+					attmps = 0
+					for i in range(1000):
+						stored_i = i	
+						i = str(i)
+						i = hashlib.sha256(i.encode())
+						i = i.hexdigest()
+						if i == columns[0].split(",")[0]:
+							attmps = stored_i
+					attmps += 3
+					failed_attmps = attmps // 3
+					if failed_attmps == 1:
+						cooldown = 1
+					elif failed_attmps == 2:
+						cooldown = 5
+					elif failed_attmps == 3:
+						cooldown = 10
+					elif failed_attmps == 4:
+						cooldown = 60
+					else:
+						cooldown = "X"
+			except FileNotFoundError:
+				attmps = 3
+			with open(banned_path, "w", encoding="utf-8") as file:
+				attmps = str(attmps)
+				attmps = hashlib.sha256(attmps.encode())
+				attmps = attmps.hexdigest()
+				now = datetime.now()
+				current_hour = now.strftime("%H")
+				current_min = now.strftime("%M")
+				for i in range(10):
+					if current_min == f"0{i}":
+						current_min =str(i)
+					if current_hour == f"0{i}":
+						current_hour = str(i)
+				current_hour = hashlib.sha256(current_hour.encode())
+				current_hour = current_hour.hexdigest()	
+				current_min = hashlib.sha256(current_min.encode())
+				current_min = current_min.hexdigest()	
+				file.write(f"{attmps}, {current_hour}, {current_min}")
 			print("terminating...")
 			time.sleep(3)
 			sys.exit()	
@@ -677,6 +849,7 @@ while True:
 		main()
 		try:	
 			with open("results.txt", "r", encoding="utf-8") as file:
+				others_statement = []
 				lines = file.readlines()
 				for line in lines:
 					words = line.split(",")
@@ -703,7 +876,12 @@ while True:
 						if statement == info3:
 							info3 = j
 							break
-					print(f"|{info1}|\n\t |Tries: {info2}| \n\t |Average success rate| -> |{info3}%|")
+					if info1 == logged_as:
+						print(f"YOU \n\t|{info1}|\n\t\t |Tries: {info2}| \n\t\t\t |Average success rate| -> |{info3}%|\nOTHERS")
+					else:
+						others_statement.append(f"\t|{info1}|\n\t\t |Tries: {info2}| \n\t\t\t |Average success rate| -> |{info3}%|")
+				for others in others_statement:
+					print(others)
 					
 			input("\n\t\tEnter to continue")
 			clean()
@@ -715,3 +893,4 @@ while True:
 #Day 18.9.2024 -> added the function of deleting users and editing passwords. Also redesign menu for users and admin. Correction of errors of duplicate names in the register section
 #Day 19.9.2024 -> Translated to English, small bugs fixes
 #Day 24.9.2024 -> Persistent cookie function, Building an SLS (Special Layer of Security [for Improved Encryption of Stored Hashes])	
+#Day 25.9.2024 -> Added new functuion for better security. The cooldown function (If you try 3 wrong login attemps, you will be instantly cooldowned)
