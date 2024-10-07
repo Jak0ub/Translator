@@ -420,7 +420,7 @@ while True:
 							secondary = main2[1]
 							main2 = main2[0]
 						quest = input(f"|{main2}|: ")
-						if quest.lower() == secondary:
+						if quest.lower() == secondary.lower():
 							print("\t✔️")
 							right += 1
 						else:
