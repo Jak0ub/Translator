@@ -20,6 +20,7 @@ else:
 	temp_path = "/tmp/translator_session.dat"
 	banned_path = "/tmp/attemps.dat"
 #Variables
+characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 wrong_attempts = 0
 logged_as = ""
 succes = False
@@ -217,11 +218,15 @@ def main():
  _/ |                            
 |__/                            
 ''')
-def check():
+def administrator():
 	try:
 		with open("credentials.txt", "r", encoding="utf-8") as file:
 			lines = file.readlines()
-			line_zero = lines[0].strip()
+			try:
+				line_zero = lines[0].strip()
+			except IndexError:
+				line_zero = ""
+				admin_line = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918:e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a,"
 			succesfully = False
 			admin_line = ""
 			try:
@@ -260,6 +265,83 @@ try:
 except FileNotFoundError:
 	f = open("words_configFile.txt", "a")
 	f.close()
+#SLS check
+status_SLS = "disabled"
+try:
+	with open("credentials.txt", "r", encoding="utf-8") as file:
+		columns = file.readlines()
+		try:
+			if columns[0].split(",")[0] == "SLS:SLS":
+				status_SLS = "enabled"
+		except IndexError:
+			status_SLS = "disabled"
+except FileNotFoundError:
+	status_SLS = "disabled"
+if status_SLS == "enabled":
+	clean()
+	main()
+	sls_password = getpass.getpass("|Enter password for decryption|\n SLS$ > ")
+	with open("credentials.txt", "r", encoding="utf-8") as file:
+		columns = file.readlines()
+		columns = columns[0]
+		columns = columns.split(",")
+		SLS_all1 = 0
+		SLS_all1 = 0
+		SLS_all = 0
+		SLS_write = []
+		for column in columns:
+			SLS_first = []
+			SLS_second = []
+			if column == "SLS:SLS":
+				continue
+			else:
+				SLS_all = len(sls_password)
+				try:
+					SLS_decrypt1 = column.split(":")[0]
+					SLS_decrypt2 = column.split(":")[1]
+				except IndexError:
+					continue
+				sls3 = list(sls_password)
+				for sls in sls3:
+					SLS_all1 += characters.index(sls)
+				SLS_decrypt1 = list(SLS_decrypt1)
+				SLS_decrypt2 = list(SLS_decrypt2)					
+				for sls in SLS_decrypt1:
+					SLS_all1 += characters.index(sls)
+				for sls in SLS_decrypt2:
+					SLS_all1 -= characters.index(sls)
+				for letter in SLS_decrypt1:
+					SLS_all = SLS_all1 + len(sls_password)
+					SLS_all -= characters.index(letter)
+					while SLS_all >= len(characters):
+						SLS_all -= len(characters)
+					while SLS_all < 0:
+						SLS_all += len(characters)
+					SLS_first.append(characters[-SLS_all])
+				for letter in SLS_decrypt2:
+					SLS_all = SLS_all1 + len(sls_password)
+					SLS_all -= characters.index(letter)
+					while SLS_all >= len(characters):
+						SLS_all -= len(characters)
+					while SLS_all < 0:
+						SLS_all += len(characters)
+					SLS_second.append(characters[-SLS_all])
+				SLS_write.append(f"{empty.join(SLS_first)}:{empty.join(SLS_second)},")
+		correct_SLS = False
+		for checks in SLS_write:
+			checks = checks.split(",")[0].split(":")[0]
+			if checks == "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918":
+				correct_SLS = True
+				break
+		if correct_SLS == True:
+			print("correct password")
+			time.sleep(2)
+		else:
+			print("incorrect password")
+			print("terminating...")
+			time.sleep(3)
+			sys.exit()
+	saved_credentials = SLS_write
 #loading
 clean()
 main()
@@ -303,13 +385,14 @@ time.sleep(0.6)
 clean()
 #Main Menu
 while True:
+	clean()
 	main()
 	if logged_as != "":
 		print(f"\t\t|Logged as: {logged_as}|")
 	if logged_as == "":
 		print("\t\t|Not Logged|")
 	if logged_as == "admin":
-		choice = input("Enter number of action:\n |0| -> |Quit|\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n\t")
+		choice = input(f"Enter number of action:\n |0| -> |Quit|\n |1| -> |Add vocabulary|\n |2| -> |Remove Words| \n |3| -> |Start Practicing|\n |4| -> |Search availability of words| \n |5| -> |List current vocabulary| \n |6| -> |Login|\n |7| -> |Register|\n |8| -> |Password change|\n |9| -> |Delete user|\n |10| -> |User score|\n |11| -> |SLS|\n\t")
 	else:
 		choice = input("Enter number of action:\n |0| -> |Quit|\n |1| -> |Start Practicing|\n |2| -> |List current vocabulary| \n |3| -> |Login|\n |4| -> |User score|\n\t")		
 	try:
@@ -321,8 +404,8 @@ while True:
 		continue
 	if choice == 0:
 		break		
-	if choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5 and choice != 6 and choice != 7 and choice != 8 and choice != 9 and choice != 10 and logged_as == "admin":
-		print("\t\t0-10!")
+	if choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5 and choice != 6 and choice != 7 and choice != 8 and choice != 9 and choice != 10 and choice != 11 and logged_as == "admin":
+		print("\t\t0-11!")
 		time.sleep(1)		
 		clean()
 		continue
@@ -545,7 +628,8 @@ while True:
 		quit = False
 		clean()	
 		main()
-		check()
+		if status_SLS == "disabled":
+			administrator()
 		while wrong_attempts != 3:
 			clean()	
 			main()
@@ -562,20 +646,23 @@ while True:
 			entered = entered.hexdigest()
 			entered2 = hashlib.sha256(entered2.encode())
 			entered2 = entered2.hexdigest()
-			with open("credentials.txt", "r", encoding="utf-8") as file:
-				lines = file.readlines()
-				for line in lines:
-					columns = line.strip().split(",")
-					try:
-						for column in columns:
-							words = column.split(":")
-							uzivatel = words[0]
-							password = words[1]
-							if entered == uzivatel:
-								if entered2 == password:
-									succes = True
-					except IndexError:
-						pass
+			if status_SLS == "enabled":
+				lines = saved_credentials
+			else:
+				with open("credentials.txt", "r", encoding="utf-8") as file:
+						lines = file.readlines()
+			for line in lines:
+				columns = line.strip().split(",")
+				try:
+					for column in columns:
+						words = column.split(":")
+						entered_user = words[0]
+						password = words[1]
+						if entered == entered_user:
+							if entered2 == password:
+								succes = True
+				except IndexError:
+					pass
 			if succes == True:
 				logged_as = logged_as2
 				wrong_attempts = 0
@@ -669,21 +756,29 @@ while True:
 			sys.exit()	
 		clean()	
 	elif choice == 7 and logged_as == "admin":
-		while True:
-			succes = False
-			clean()
-			main()
-			check()
-			if logged_as != "":
-				print("|Q| -> |End loop|\n")
-				print("|Register|")
-				user = input("|Username|: ")
-				if user.lower() == "q":
-					break
-				user = hashlib.sha256(user.encode())
-				user = user.hexdigest()
-				with open("credentials.txt", "r", encoding="utf-8") as file:
-					lines = file.readlines()
+		clean()
+		main()
+		if status_SLS == "enabled":
+			input("SLS active, disable it first! Enter to continue")
+		else:
+			while True:
+				succes = False
+				clean()
+				main()
+				administrator()
+				if logged_as != "":
+					print("|Q| -> |End loop|\n")
+					print("|Register|")
+					user = input("|Username|: ")
+					if user.lower() == "q":
+						break
+					user = hashlib.sha256(user.encode())
+					user = user.hexdigest()
+					if status_SLS == "enabled":
+						lines = saved_credentials
+					else:
+						with open("credentials.txt", "r", encoding="utf-8") as file:
+							lines = file.readlines()
 					lines = lines[0].split(",")
 					for line in lines:
 						first = line.split(":")[0]
@@ -692,158 +787,168 @@ while True:
 							break
 					if user == first:
 						continue
-				while True:
-					pasw = getpass.getpass("|Password|: ")
-					pasw2 = getpass.getpass("|Password again|: ")
-					if pasw == pasw2:
-						break
-					else:
-						input("\tPasswords do not match, Enter to continue")
-						clean()
-						main()
-						continue
-				pasw = hashlib.sha256(pasw.encode())
-				pasw = pasw.hexdigest()
-				pasw2 = ""
-				with open("credentials.txt", "r", encoding="utf-8") as file:
-					lines = file.readlines()
-					lines.append(f"{user}:{pasw},")
-				with open("credentials.txt", "w", encoding="utf-8") as file:
-					file.writelines(lines)
-				input("Credentials were saved, Enter to continue")
-				clean()
-		clean()
-	elif choice == 8 and logged_as == "admin":
-		while True:
-			clean()
-			main()
-			print("|Q| -> |End loop|\n")
-			print("|Change Password|")
-			main21 = input("|Username|: ")
-			if main21.lower() == "q":
-				clean()
-				break
-			main21 = hashlib.sha256(main21.encode())
-			main21 = main21.hexdigest()
-			with open("credentials.txt", "r", encoding="utf-8") as file:
-				lines = file.readlines()
-				line = lines[0].split(",")
-				important = -1
-				mabye22 = ""
-				for word in line:
-					try:
-						important += 1
-						mabye = word.split(":")[0]
-						mabye2 = word.split(":")[1]
-						if mabye == main21:
-							mabye22 = mabye2
-							important2 = important
-							break
-					except IndexError:
-						pass
-			if mabye22 == "":
-				input("\n\t|Username not found, Enter to continue|")
-				continue
-			else:
-				main22 = getpass.getpass("|Old Password|: ")
-				main22 = hashlib.sha256(main22.encode())
-				main22 = main22.hexdigest()
-				if main22 != mabye22:
-					input("\n\t|Wrong password, Enter to continue|")
-					continue
-				else:
 					while True:
-						main23 = getpass.getpass("|New password|: ")
-						main24 = getpass.getpass("|Again new password|: ")
-						if main23 != main24:
-							input("|Passwords do not match, Enter to continue|")
+						pasw = getpass.getpass("|Password|: ")
+						pasw2 = getpass.getpass("|Password again|: ")
+						if pasw == pasw2:
+							break
+						else:
+							input("\tPasswords do not match, Enter to continue")
 							clean()
 							main()
 							continue
-						else:
-							break
-					new_password = hashlib.sha256(main23.encode())
-					new_password = new_password.hexdigest()
-					main24 = new_password
+					pasw = hashlib.sha256(pasw.encode())
+					pasw = pasw.hexdigest()
+					pasw2 = ""
 					with open("credentials.txt", "r", encoding="utf-8") as file:
 						lines = file.readlines()
-						lines = lines[0].split(",")
-						if important2 > 0:
-							lines[important2] = f",{main21}:{new_password},"
-						else:
-							lines[important2] = f"{main21}:{new_password},"
+						lines.append(f"{user}:{pasw},")
 					with open("credentials.txt", "w", encoding="utf-8") as file:
 						file.writelines(lines)
-					print("\t|Password sucesfully changed|")
-					input("\n\n|WARNING!|->|If you have active Persistent cookie, you will need to relogin to reactivate it|\n\tEnter to continue")
-
+					input("Credentials were saved, Enter to continue")
+					clean()
+		clean()
+	elif choice == 8 and logged_as == "admin":
+		clean()
+		main()
+		if status_SLS == "enabled":
+			input("SLS active, disable it first! Enter to continue")
+		else:
+			while True:
+				clean()
+				main()
+				print("|Q| -> |End loop|\n")
+				print("|Change Password|")
+				main21 = input("|Username|: ")
+				if main21.lower() == "q":
 					clean()
 					break
-	elif choice == 9 and logged_as == "admin":
-		while True:
-			clean()
-			main()
-			print("|Q| -> |End loop|\n")
-			print("|Unregister|")
-			main21 = input("|Username|: ")
-			if main21 == "admin":
-				print("\t|Cannot remove admin!|")
-				time.sleep(1)
-				clean()
-				continue
-			elif main21.lower() == "q":
-				clean()
-				break
-			main21 = hashlib.sha256(main21.encode())
-			main21 = main21.hexdigest()
-			with open("credentials.txt", "r", encoding="utf-8") as file:
-				lines = file.readlines()
-				line = lines[0].split(",")
-				important = -1
-				mabye22 = ""
-				for word in line:
-					try:
-						important += 1
-						mabye = word.split(":")[0]
-						mabye2 = word.split(":")[1]
-						if mabye == main21:
-							mabye22 = mabye2
-							important2 = important
-							break
-					except IndexError:
-						pass
-			if mabye22 == "":
-				input("\n\t|Username not found, Enter to continue|")
-				continue
-			else:
-				main22 = getpass.getpass("|Password|: ")
-				main22 = hashlib.sha256(main22.encode())
-				main22 = main22.hexdigest()
-				if main22 != mabye22:
-					input("\n\t|Wrong password, Enter to continue|")
+				main21 = hashlib.sha256(main21.encode())
+				main21 = main21.hexdigest()
+				with open("credentials.txt", "r", encoding="utf-8") as file:
+					lines = file.readlines()
+					line = lines[0].split(",")
+					important = -1
+					mabye22 = ""
+					for word in line:
+						try:
+							important += 1
+							mabye = word.split(":")[0]
+							mabye2 = word.split(":")[1]
+							if mabye == main21:
+								mabye22 = mabye2
+								important2 = important
+								break
+						except IndexError:
+							pass
+				if mabye22 == "":
+					input("\n\t|Username not found, Enter to continue|")
 					continue
 				else:
-					with open("credentials.txt", "r", encoding="utf-8") as file:
-						lines = file.readlines()
-						lines = lines[0].split(",")
-						cisilka = len(lines)
-						lines2 = []
-						number = 0
-						for okay in lines:
-							number += 1
-							if okay.split(":")[0] == main21 and okay.split(":")[1] == main22:
-								pass
+					main22 = getpass.getpass("|Old Password|: ")
+					main22 = hashlib.sha256(main22.encode())
+					main22 = main22.hexdigest()
+					if main22 != mabye22:
+						input("\n\t|Wrong password, Enter to continue|")
+						continue
+					else:
+						while True:
+							main23 = getpass.getpass("|New password|: ")
+							main24 = getpass.getpass("|Again new password|: ")
+							if main23 != main24:
+								input("|Passwords do not match, Enter to continue|")
+								clean()
+								main()
+								continue
 							else:
-								if cisilka == number:
-									lines2.append(f"{okay}")
-								else:
-									lines2.append(f"{okay},")
-					with open("credentials.txt", "w", encoding="utf-8") as file:
-						file.writelines(lines2)	
-					print("\t|Username sucesfully deleted|")
+								break
+						new_password = hashlib.sha256(main23.encode())
+						new_password = new_password.hexdigest()
+						main24 = new_password
+						with open("credentials.txt", "r", encoding="utf-8") as file:
+							lines = file.readlines()
+							lines = lines[0].split(",")
+							if important2 > 0:
+								lines[important2] = f",{main21}:{new_password},"
+							else:
+								lines[important2] = f"{main21}:{new_password},"
+						with open("credentials.txt", "w", encoding="utf-8") as file:
+							file.writelines(lines)
+						print("\t|Password sucesfully changed|")
+						input("\n\n|WARNING!|->|If you have active Persistent cookie, you will need to relogin to reactivate it|\n\tEnter to continue")
+
+						clean()
+						break
+	elif choice == 9 and logged_as == "admin":
+		clean()
+		main()
+		if status_SLS == "enabled":
+			input("SLS active, disable it first! Enter to continue")
+		else:
+			while True:
+				clean()
+				main()
+				print("|Q| -> |End loop|\n")
+				print("|Unregister|")
+				main21 = input("|Username|: ")
+				if main21 == "admin":
+					print("\t|Cannot remove admin!|")
 					time.sleep(1)
 					clean()
-					break					
+					continue
+				elif main21.lower() == "q":
+					clean()
+					break
+				main21 = hashlib.sha256(main21.encode())
+				main21 = main21.hexdigest()
+				with open("credentials.txt", "r", encoding="utf-8") as file:
+					lines = file.readlines()
+					line = lines[0].split(",")
+					important = -1
+					mabye22 = ""
+					for word in line:
+						try:
+							important += 1
+							mabye = word.split(":")[0]
+							mabye2 = word.split(":")[1]
+							if mabye == main21:
+								mabye22 = mabye2
+								important2 = important
+								break
+						except IndexError:
+							pass
+				if mabye22 == "":
+					input("\n\t|Username not found, Enter to continue|")
+					continue
+				else:
+					main22 = getpass.getpass("|Password|: ")
+					main22 = hashlib.sha256(main22.encode())
+					main22 = main22.hexdigest()
+					if main22 != mabye22:
+						input("\n\t|Wrong password, Enter to continue|")
+						continue
+					else:
+						with open("credentials.txt", "r", encoding="utf-8") as file:
+							lines = file.readlines()
+							lines = lines[0].split(",")
+							cisilka = len(lines)
+							lines2 = []
+							number = 0
+							for okay in lines:
+								number += 1
+								if okay.split(":")[0] == main21 and okay.split(":")[1] == main22:
+									pass
+								else:
+									if cisilka == number:
+										lines2.append(f"{okay}")
+									else:
+										lines2.append(f"{okay},")
+						with open("credentials.txt", "w", encoding="utf-8") as file:
+							file.writelines(lines2)	
+						print("\t|Username sucesfully deleted|")
+						time.sleep(1)
+						clean()
+						break					
 	elif choice == 10 and logged_as == "admin" or logged_as != "admin" and choice == 4:
 		clean()
 		main()
@@ -887,10 +992,162 @@ while True:
 			clean()
 		except FileNotFoundError:
 			input("No results, Enter to continue")
-			clean()				
+			clean()	
+	elif choice == 11 and logged_as == "admin":
+		clean()
+		main()
+		if status_SLS == "enabled":
+			while True:
+				clean()
+				main()
+				sls_password = getpass.getpass("|SLS| -> |Enabled|\n|Enter password for decryption|\n|Q = quit|\n\n SLS$ > ")
+				if sls_password.lower() == "q":
+					break
+				with open("credentials.txt", "r", encoding="utf-8") as file:
+					columns = file.readlines()
+					columns = columns[0]
+					columns = columns.split(",")
+					SLS_all1 = 0
+					SLS_all = 0
+					SLS_write = []
+					for column in columns:
+						SLS_first = []
+						SLS_second = []
+						if column == "SLS:SLS":
+							continue
+						else:
+							SLS_all = len(sls_password)
+							try:
+								SLS_decrypt1 = column.split(":")[0]
+								SLS_decrypt2 = column.split(":")[1]
+							except IndexError:
+								continue
+							sls3 = list(sls_password)
+							for sls in sls3:
+								SLS_all1 += characters.index(sls)
+							SLS_decrypt1 = list(SLS_decrypt1)
+							SLS_decrypt2 = list(SLS_decrypt2)					
+							for sls in SLS_decrypt1:
+								SLS_all1 += characters.index(sls)
+							for sls in SLS_decrypt2:
+								SLS_all1 -= characters.index(sls)
+							for letter in SLS_decrypt1:
+								SLS_all = SLS_all1 + len(sls_password)
+								SLS_all -= characters.index(letter)
+								while SLS_all >= len(characters):
+									SLS_all -= len(characters)
+								while SLS_all < 0:
+									SLS_all += len(characters)
+								SLS_first.append(characters[-SLS_all])
+							for letter in SLS_decrypt2:
+								SLS_all = SLS_all1 + len(sls_password)
+								SLS_all -= characters.index(letter)
+								while SLS_all >= len(characters):
+									SLS_all -= len(characters)
+								while SLS_all < 0:
+									SLS_all += len(characters)
+								SLS_second.append(characters[-SLS_all])
+							SLS_write.append(f"{empty.join(SLS_first)}:{empty.join(SLS_second)},")
+				status_SLS = "disabled"
+				correct_SLS = False
+				for checks in SLS_write:
+					checks = checks.split(",")[0].split(":")[0]
+					if checks == "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918":
+						correct_SLS = True
+						break
+				if correct_SLS == True:
+					with open("credentials.txt", "w", encoding="utf-8") as file:
+						file.write(empty.join(SLS_write))
+						input("Done, enter to continue")
+						break
+				else:
+					print("incorrect password")
+					time.sleep(2)
+					continue
+		else:
+			while True:
+				clean()
+				main()
+				error_SLS = False
+				chosen_SLS = getpass.getpass("|SLS| -> |Disabled|\n|Enter password for encryption(only characters and/or numbers)|\n|Q = quit|\n\n SLS$ > ")
+				if chosen_SLS.lower() == "q":
+					break
+				if len(chosen_SLS) < 8:
+					input("Longer than 8 letters")
+					continue
+				chosen_SLS = list(chosen_SLS)
+				for letter in chosen_SLS:
+					if letter not in characters:
+						input("Only characters and/or numbers, Enter to continue")
+						error_SLS = True
+					if error_SLS == True:
+						break
+				if error_SLS == True:
+					continue
+				else:
+					with open("credentials.txt", "r", encoding="utf-8") as file:
+						SLS_write = ["SLS:SLS,"]
+						SLS_done = 0
+						columns = file.readlines()
+						SLS_all1 = 0
+						SLS_len = len(chosen_SLS)
+						for column in columns:
+							column = column.split(",")
+							for column_each in column:
+								column_each.strip()
+								working_SLS = 0
+								SLS_first = []
+								SLS_second = []
+								work_SLS = []
+								try:
+									sls1 = column_each.split(":")[0].strip()
+									sls2 = column_each.split(":")[1].strip()
+								except IndexError:
+									break
+								sls3 = chosen_SLS
+								sls1 = list(sls1)
+								sls2 = list(sls2)
+								sls3 = list(chosen_SLS)
+								for sls in sls3:
+									SLS_all1 += characters.index(sls)				
+								for sls in sls1:
+									SLS_all1 += characters.index(sls)
+								for sls in sls2:
+									SLS_all1 -= characters.index(sls)
+								for letter in sls1:
+									SLS_all = SLS_all1 + SLS_len
+									SLS_all += characters.index(letter)
+									while SLS_all >= len(characters):
+										SLS_all -= len(characters)
+									while SLS_all < 0:
+										SLS_all += len(characters)
+									SLS_first.append(characters[SLS_all])
+								for letter in sls2:
+									SLS_all = SLS_all1 + SLS_len
+									SLS_all += characters.index(letter)
+									while SLS_all >= len(characters):
+										SLS_all -= len(characters)
+									while SLS_all < 0:
+										SLS_all += len(characters)
+									SLS_second.append(characters[SLS_all])
+								SLS_write.append(f"{empty.join(SLS_first)}:{empty.join(SLS_second)},")
+					with open("credentials.txt", "w", encoding="utf-8") as file:
+						file.write("".join(SLS_write))
+						print("Encrypting...")
+						time.sleep(2)
+						sys.exit()
+						
+						
+						
+							
+							
+						
+						
+			
 #Created by Jak0ub on 04.09.2024
 #Day 17.9.2024 -> added Average success rate function (New Persistent cookie function is coming)
 #Day 18.9.2024 -> added the function of deleting users and editing passwords. Also redesign menu for users and admin. Correction of errors of duplicate names in the register section
 #Day 19.9.2024 -> Translated to English, small bugs fixes
 #Day 24.9.2024 -> Persistent cookie function, Building an SLS (Special Layer of Security [for Improved Encryption of Stored Hashes])	
 #Day 25.9.2024 -> Added new functuion for better security. The cooldown function (If you try 3 wrong login attemps, you will be instantly cooldowned)
+#Day 9.10.2024 -> SLS function (Lock your app, and your login credentials!)
