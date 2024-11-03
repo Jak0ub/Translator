@@ -2,6 +2,8 @@
 ```SHA-256
 c8d29419d87ae9241da7573bbe2a396e2c72ee43bf72b327bb500f00cc8d77e5
 ```
+`!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
+
 `!` `You will now be cooldowned for false login attempts`
 
 `!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
