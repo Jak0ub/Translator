@@ -1151,3 +1151,4 @@ while True:
 #Day 24.9.2024 -> Persistent cookie function, Building an SLS (Special Layer of Security [for Improved Encryption of Stored Hashes])	
 #Day 25.9.2024 -> Added new functuion for better security. The cooldown function (If you try 3 wrong login attemps, you will be instantly cooldowned)
 #Day 9.10.2024 -> SLS function (Lock your app, and your login credentials!)
+#Day 8.12.2024 -> Bug Fixes
