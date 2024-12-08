@@ -1,6 +1,6 @@
 ## SHA-256
 ```SHA-256
-c8d29419d87ae9241da7573bbe2a396e2c72ee43bf72b327bb500f00cc8d77e5
+35A61916163A559550DD7A9995D399475AB44B423EBBE5C301D3DFD42E55B347
 ```
 `!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
 
