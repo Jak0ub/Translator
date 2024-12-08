@@ -467,7 +467,7 @@ while True:
 				input("\tDeleted✔️\n\t\tEnter to continue")
 			else:
 				input("\tNot Found✖️\n\t\tEnter to continue")					
-	elif choice == 3 and logged_as == "admin" or logged_as != "admin" and choice == 1:
+	elif choice == 3 and logged_as == "admin" or logged_as != "admin" and choice == 1 and logged_as != "":
 		if logged_as == "None":
 			clean()
 			main()
