@@ -1,3 +1,5 @@
+![Main image](https://github.com/Jak0ub/Jak0ub/blob/main/translator.png)
+
 ## SHA-256
 ```SHA-256
 E6E8A50C1B0A10FF273638F3328CEC5AD343AF61F33E2D4EC64D128F51FCC642
