@@ -4,6 +4,8 @@
 ```SHA-256
 E6E8A50C1B0A10FF273638F3328CEC5AD343AF61F33E2D4EC64D128F51FCC642
 ```
+## Changelog
+
 `!` `Your are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
 
 `!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
