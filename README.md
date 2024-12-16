@@ -1,4 +1,4 @@
-![Main image](https://github.com/Jak0ub/Jak0ub/blob/main/translator.png)
+
 
 ## SHA-256
 ```SHA-256
