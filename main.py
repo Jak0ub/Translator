@@ -422,7 +422,7 @@ while True:
 			with open("words_configFile.txt", "r", encoding="utf-8") as file:
 				columns = file.readlines()
 				try:
-					listing = columns[0].split(",")[0].split("-")
+					listing = columns[0].split(";")[0].split("-")
 					lang_from =  listing[0]
 					lang_to = listing[-1]
 				except IndexError:
@@ -444,7 +444,7 @@ while True:
 					break
 				with open("words_configFile.txt", "r", encoding="utf-8") as file:
 					lines = file.readlines()
-					lines.append(f"{add}:{add1},")
+					lines.append(f"{add}:{add1};")
 				with open("words_configFile.txt", "w", encoding="utf-8") as file:
 					file.writelines(lines)
 				print("\tEnrolled✔️\n")
@@ -453,7 +453,7 @@ while True:
 		with open("words_configFile.txt", "r", encoding="utf-8") as file:
 				lines = file.readlines()
 				try:
-					testing = lines[0].split(",")[1]
+					testing = lines[0].split(";")[1]
 				except IndexError:
 					clean()
 					main()
@@ -463,7 +463,7 @@ while True:
 			while True:
 				clean()
 				main()
-				lines2 = [f"{lines[0].split(",")[0]},"]
+				lines2 = [f"{lines[0].split(";")[0]};"]
 				success = False
 				print("|Q| -> |End Loop|\n")
 				delete = input("Enter word to be deleted: ")
@@ -473,7 +473,7 @@ while True:
 				with open("words_configFile.txt", "r", encoding="utf-8") as file:
 					lines = file.readlines()
 					for i in range(len(lines)):
-						columns = lines[i].strip().split(",")
+						columns = lines[i].strip().split(";")
 						for column in columns:
 							slup = column.split(":")
 							try:
@@ -483,7 +483,7 @@ while True:
 									pass
 									success = True
 								else:
-									lines2.append(f"{one}:{two},")
+									lines2.append(f"{one}:{two};")
 							except IndexError:
 								pass
 					lines = lines2
@@ -505,15 +505,15 @@ while True:
 		with open("words_configFile.txt", "r", encoding="utf-8") as file:
 			lines = file.readlines()
 			try:
-				mark = lines[0].split(",")[0].split("-")[0]
-				mark2 = lines[0].split(",")[0].split("-")[-1]
-				mark_final = lines[0].split(",")[0].split(mark2)[0].split(mark)
+				mark = lines[0].split(";")[0].split("-")[0]
+				mark2 = lines[0].split(";")[0].split("-")[-1]
+				mark_final = lines[0].split(";")[0].split(mark2)[0].split(mark)
 				mark_final = list(mark_final[1])
 				if len(mark_final) == 1:
 					mark_final = " -> "
 				else:
 					mark_final = " = "
-				print(f"|{lines[0].split(",")[0].split("-")[0]}{mark_final}{lines[0].split(",")[0].split("-")[-1]}|\n")
+				print(f"|{lines[0].split(";")[0].split("-")[0]}{mark_final}{lines[0].split(";")[0].split("-")[-1]}|\n")
 			except IndexError:
 				clean()
 				main()
@@ -523,7 +523,7 @@ while True:
 			print("Word translation:")
 			mark = mark_final
 			for line in lines:
-				columns = line.strip().split(",")
+				columns = line.strip().split(";")
 				columns.pop(0)
 				numbers = []
 				while len(numbers) != len(columns):
@@ -636,7 +636,7 @@ while True:
 				with open("words_configFile.txt", "r", encoding="utf-8") as file:
 					lines = file.readlines()
 					for i in range(len(lines)):
-						columns = lines[i].strip().split(",")
+						columns = lines[i].strip().split(";")
 						columns.pop(0)
 						for column in columns:
 							try:
@@ -662,7 +662,7 @@ while True:
 		with open("words_configFile.txt", "r", encoding="utf-8") as file:
 			lines = file.readlines()
 			for i in range(len(lines)):
-				columns = lines[i].strip().split(",")
+				columns = lines[i].strip().split(";")
 				columns.pop(0)
 				for column in columns:
 					try:
@@ -1193,9 +1193,9 @@ while True:
 			with open("words_configFile.txt", "r", encoding="utf-8") as file:
 				lines = file.readlines()
 				try:
-					mark = lines[0].split(",")[0].split("-")[0]
-					mark2 = lines[0].split(",")[0].split("-")[-1]
-					mark_final = lines[0].split(",")[0].split(mark2)[0].split(mark)
+					mark = lines[0].split(";")[0].split("-")[0]
+					mark2 = lines[0].split(";")[0].split("-")[-1]
+					mark_final = lines[0].split(";")[0].split(mark2)[0].split(mark)
 					mark_final = list(mark_final[1])
 					if len(mark_final) == 1:
 						mark_final = " -> "
@@ -1211,11 +1211,11 @@ while True:
 					lang_from = input("Enter first language: ")
 					lang_to = input("Enter second language: ")
 					with open("words_configFile.txt", "w", encoding="utf-8") as file:
-						file.write(f"{lang_from}-{lang_to},")
+						file.write(f"{lang_from}-{lang_to};")
 				elif mode.lower() == "q":
 					break
 			else:
-				mode = input(f"Current mode: |{lines[0].split(",")[0].split("-")[0]}{mark_final}{lines[0].split(",")[0].split("-")[-1]}|\nEdit: |e|\nQuit: |q|\n\nMode$ > ")
+				mode = input(f"Current mode: |{lines[0].split(";")[0].split("-")[0]}{mark_final}{lines[0].split(";")[0].split("-")[-1]}|\nEdit: |e|\nQuit: |q|\n\nMode$ > ")
 				if mode.lower() == "e":
 					clean()
 					main()
@@ -1224,13 +1224,13 @@ while True:
 						with open("words_configFile.txt", "r", encoding="utf-8") as file:
 							lines = file.readlines()
 							line = lines[0]
-							line1 = line.split(",")
+							line1 = line.split(";")
 							main_lines = []
 							for word in line1:
 								try:
 									word1 = word.split(":")[0]
 									word2 = word.split(":")[1]
-									seq = f"{word2}:{word1},"
+									seq = f"{word2}:{word1};"
 									main_lines.append(seq)
 								except IndexError:
 									pass
@@ -1238,12 +1238,12 @@ while True:
 							line1.pop(0)
 							lang1 = main_line.split("-")[0]
 							lang2 = main_line.split("-")[-1]
-							mark = lines[0].split(",")[0].split("-")[0]
-							mark2 = lines[0].split(",")[0].split("-")[-1]
-							mark_final = lines[0].split(",")[0].split(mark2)[0].split(mark)
+							mark = lines[0].split(";")[0].split("-")[0]
+							mark2 = lines[0].split(";")[0].split("-")[-1]
+							mark_final = lines[0].split(";")[0].split(mark2)[0].split(mark)
 							mark_final = list(mark_final[1])
 							mark_final = len(mark_final) * "-"
-							main_string = f"{lang2}{mark_final}{lang1},"
+							main_string = f"{lang2}{mark_final}{lang1};"
 							main_lines.insert(0, "".join(main_string))
 						with open("words_configFile.txt", "w", encoding="utf-8") as file:
 							file.write("".join(main_lines))
@@ -1252,18 +1252,18 @@ while True:
 							lines = file.readlines()
 							main_line2 = []
 							line1 = lines[0]
-							main_line1 = line1.split(",")
+							main_line1 = line1.split(";")
 							for word in main_line1:
 								if word != "":
-									main_line2.append(f"{word},")
+									main_line2.append(f"{word};")
 							main_line2.pop(0)
-							line1 = line1.split(",")[0]
+							line1 = line1.split(";")[0]
 							lang_1 = line1.split("-")[0]
 							lang_2 = line1.split("-")[-1]
 							if mark_final == " = ":
-								main_string = f"{lang_1}-{lang_2},"
+								main_string = f"{lang_1}-{lang_2};"
 							else:
-								main_string = f"{lang_1}--{lang_2},"
+								main_string = f"{lang_1}--{lang_2};"
 							main_line2.insert(0, main_string)
 						with open("words_configFile.txt", "w", encoding="utf-8") as file:
 							file.write("".join(main_line2))
@@ -1279,3 +1279,4 @@ while True:
 #Day 25.9.2024 -> Added new functuion for better security. The cooldown function (If you try 3 wrong login attemps, you will be instantly cooldowned)
 #Day 9.10.2024 -> SLS function (Lock your app, and your login credentials!)
 #Day 8.12.2024 -> New language mode selection! Big thing!
+#Day 18.12.2024 -> Fixes in storing words(You are now able to write sentences with commas)
