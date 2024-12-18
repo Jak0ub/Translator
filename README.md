@@ -2,11 +2,13 @@
 `Compatible with Unix and Windows based systems`
 ## SHA-256
 ```SHA-256
-E6E8A50C1B0A10FF273638F3328CEC5AD343AF61F33E2D4EC64D128F51FCC642
+78054947178938d1c2a1bc1f39ef6e79a0780cfc41310b449501f3729d1eea08
 ```
 ## Changelog
 
-`!` `Your are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
+`!` `You are now able to write whole sentences with commas`
+
+`!` `You are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
 
 `!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
 
