@@ -4,6 +4,9 @@
 ```SHA-256
 78054947178938d1c2a1bc1f39ef6e79a0780cfc41310b449501f3729d1eea08
 ```
+> ⚠️ **Recomendation:**
+> Change your admin password to avoid possible session hijacking
+
 ## Changelog
 
 `!` `You are now able to write whole sentences with commas`
