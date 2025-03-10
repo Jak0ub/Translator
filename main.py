@@ -912,18 +912,18 @@ while True:
 								continue
 							else:
 								break
+						lines_22 = []
 						new_password = hashlib.sha256(main23.encode())
 						new_password = new_password.hexdigest()
-						main24 = new_password
 						with open("credentials.txt", "r", encoding="utf-8") as file:
 							lines = file.readlines()
 							lines = lines[0].split(",")
-							if important2 > 0:
-								lines[important2] = f",{main21}:{new_password},"
-							else:
-								lines[important2] = f"{main21}:{new_password},"
+							lines.pop(-1)
+							lines[important2] = f"{main21}:{new_password}"
+						for line in lines:
+							lines_22.append(f"{line},")
 						with open("credentials.txt", "w", encoding="utf-8") as file:
-							file.writelines(lines)
+							file.writelines(lines_22)
 						print("\t|Password sucesfully changed|")
 						input("\n\n|WARNING!|->|If you have active Persistent cookie, you will need to relogin to reactivate it|\n\tEnter to continue")
 
@@ -1280,3 +1280,4 @@ while True:
 #Day 9.10.2024 -> SLS function (Lock your app, and your login credentials!)
 #Day 8.12.2024 -> New language mode selection! Big thing!
 #Day 18.12.2024 -> Fixes in storing words(You are now able to write sentences with commas)
+#Day 10.03.2025 -> Fixed bug in Password Change function
