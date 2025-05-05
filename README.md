@@ -7,17 +7,7 @@ F48679EA75FDC8830AA1E8416F630FADDBD3028947438DA56464864960E50362
 > ⚠️ **Recomendation:**
 > Change your admin password to avoid possible session hijacking
 
-## Changelog
-
-`!` `You are now able to write whole sentences with commas`
-
-`!` `You are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
-
-`!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
-
-`!` `You will now be cooldowned for false login attempts`
-
-`!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
+---
 
 ## Introduction
 `1.`
@@ -43,11 +33,29 @@ A project aimed at those who want to practice a foreign language. The file is av
 
 It would be good to know some basics, for example, the default user is `admin` and the password is `Password`. This model is more complex, so I recommend testing it first before using it in practice.
 
+---
+
 ## Download
 Simply click on the project `main.py` and download the so-called "raw file". The program itself will then explain what and how to do.
 
 > ℹ️ **Information:**
 > It should be obvious that you will need `Python` to run it.
+
+---
+
+## Changelog
+
+`!` `You are now able to write whole sentences with commas`
+
+`!` `You are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
+
+`!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
+
+`!` `You will now be cooldowned for false login attempts`
+
+`!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
+
+---
 
 ## Python to Executable
 
