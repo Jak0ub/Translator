@@ -566,7 +566,7 @@ while True:
 			with open("results.txt", "a", encoding="utf-8") as file:
 				pass
 			with open("results.txt", "r", encoding="utf-8") as file:
-				avg = round((100 / (errors + right)) * right, 1) 
+				avg = round((100 / (errors + right)) * right, 1)
 				lines = file.readlines()
 				info3 = -33
 				info2 = 1
@@ -589,10 +589,8 @@ while True:
 							if statement == info22:
 								info2 = i
 								NotFound = False
-						info2 = int(info2)
 						number_important = line_number
 						info2 += 1
-						i = 0
 						for i in range(1002):
 							j = i / 10
 							statement = str(j)
@@ -604,8 +602,8 @@ while True:
 			avg2 = avg
 			if info3 == -33:
 				avg = float(avg)
-			else:
-				avg = round((info3 + avg) / 2, 1)	
+			if info3 != -33:
+				avg = round(((info3 * (info2 - 1)) + avg) / info2, 1)
 			avg = str(avg)
 			avg = hashlib.sha256(avg.encode())
 			avg = avg.hexdigest()			
@@ -1281,3 +1279,4 @@ while True:
 #Day 8.12.2024 -> New language mode selection! Big thing!
 #Day 18.12.2024 -> Fixes in storing words(You are now able to write sentences with commas)
 #Day 10.03.2025 -> Fixed bug in Password Change function
+#Day 27.05.2025 -> Fixed bug in Average success rate function(new thing coming out soon!)
