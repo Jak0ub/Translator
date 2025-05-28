@@ -45,15 +45,18 @@ Simply click on the project `main.py` and download the so-called "raw file". The
 
 ## Changelog
 
-`!` `You are now able to write whole sentences with commas`
+`!` `You are now able to write whole sentences with commas.`
 
 `!` `You are now able to set [Lang from] and [Lang to] OR you can select both, so you have randomized word from randomized language`
 
 `!` `You can now double-encrypt your credentials file and secure your program, allowing it to be unlocked only with a password you set up.`
 
-`!` `You will now be cooldowned for false login attempts`
+`!` `You will now be cooldowned for false login attempts.`
 
 `!` `You are now able to save persistent cookie(active for 30min!). This means that after terminating the program and launching it again, you will still be logged in!`
+
+`!` `You are now able to get 1/2 points for one wrong letter(typo).`
+
 
 ---
 
