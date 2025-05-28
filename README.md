@@ -2,7 +2,7 @@
 `Compatible with Unix and Windows based systems`
 ## SHA-256
 ```SHA-256
-F48679EA75FDC8830AA1E8416F630FADDBD3028947438DA56464864960E50362
+D742673072DDABDDC9B0EE2F6B91C68E61A5ACB83043CA3650FA9ECADCB2FB6A
 ```
 > ⚠️ **Recomendation:**
 > Change your admin password to avoid possible session hijacking
