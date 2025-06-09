@@ -523,7 +523,6 @@ while True:
 			print("Word translation:")
 			mark = mark_final
 			for line in lines:
-				translated = 0
 				columns = line.strip().split(";")
 				columns.pop(0)
 				numbers = []
@@ -552,25 +551,11 @@ while True:
 								secondary = main2[0]
 								main2 = main2[1]
 						quest = input(f"|{main2}|: ")
-						quest = list(quest.lower())
-						num = 0
-						correction = []
-						for letter in quest:
-							work = list(secondary.lower())
-							if letter == work[quest.index(letter)]:
-								num += 1
-							correction.append(work[quest.index(letter)])
-						if num == len(quest):
+						if quest.lower() == secondary.lower():
 							print("\t✔️")
-							translated += 1
 							right += 1
-						elif num == len(quest) -1: #one wrong letter is accepted
-							right += 0.5 
-							translated += 1
-							print(f"\t½\t|{"".join(correction)}| not |{"".join(quest)}|")							
 						else:
 							print("\t✖️")
-							translated += 1
 							errors += 1
 		if right == 0 and errors == 0:
 			clean()
@@ -581,7 +566,7 @@ while True:
 			with open("results.txt", "a", encoding="utf-8") as file:
 				pass
 			with open("results.txt", "r", encoding="utf-8") as file:
-				avg = round((100 / translated) * right, 1)
+				avg = round((100 / (errors + right)) * right, 1)
 				lines = file.readlines()
 				info3 = -33
 				info2 = 1
@@ -1294,5 +1279,4 @@ while True:
 #Day 8.12.2024 -> New language mode selection! Big thing!
 #Day 18.12.2024 -> Fixes in storing words(You are now able to write sentences with commas)
 #Day 10.03.2025 -> Fixed bug in Password Change function
-#Day 27.05.2025 -> Fixed bug in Average success rate function(new thing coming out soon!)
-#Day 28.05.2025 -> Started accepting typos(one wrong letter is considered 1/2 points) + added corrections if typo happened
+#Day 27.05.2025 -> Fixed bug in Average success rate function
